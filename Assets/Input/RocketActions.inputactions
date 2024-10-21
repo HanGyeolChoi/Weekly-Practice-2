@@ -1,0 +1,93 @@
+{
+    "name": "RocketActions",
+    "maps": [
+        {
+            "name": "Rocket",
+            "id": "f32a93b9-1674-47be-b25a-c742f16adbc4",
+            "actions": [
+                {
+                    "name": "Move",
+                    "type": "Value",
+                    "id": "6fb8e12c-9c4a-4679-aad5-e30df8988377",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Boost",
+                    "type": "Button",
+                    "id": "afe6d366-dd48-4675-b254-e5995b8971be",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "MultiTap",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "fe78c436-abc5-4c5b-8a7a-40af82b4b99a",
+                    "path": "<Keyboard>/space",
+                    "interactions": "MultiTap",
+                    "processors": "",
+                    "groups": "KeyMouse",
+                    "action": "Boost",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "1D Axis",
+                    "id": "a1c3ebf1-18ee-4226-ae82-d2a16d3bcc3a",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "6c4e7515-ce5e-445f-935a-0e517dc0ad06",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "3588dab9-6be9-43a8-9ee1-742b600e6041",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                }
+            ]
+        }
+    ],
+    "controlSchemes": [
+        {
+            "name": "KeyMouse",
+            "bindingGroup": "KeyMouse",
+            "devices": [
+                {
+                    "devicePath": "<Keyboard>",
+                    "isOptional": false,
+                    "isOR": false
+                },
+                {
+                    "devicePath": "<Mouse>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        }
+    ]
+}
