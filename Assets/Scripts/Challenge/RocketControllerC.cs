@@ -44,4 +44,9 @@ public class RocketControllerC : MonoBehaviour
         if (!_energySystem.UseEnergy(ENERGY_BURST)) return;
         _rocketMovement.ApplyBoost();
     }
+
+    private void OnSpace(InputValue value)
+    {
+        Debug.Log("Space!");
+    }
 }
