@@ -3,11 +3,11 @@
 public class AudioManager : Singleton<AudioManager>
 {
     private AudioSource audioSource;
-    [SerializeField] private AudioClip audioClip;
+    //[SerializeField] private AudioClip audioClip;
     private void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        audioSource.clip = audioClip;
+        //audioSource.clip = audioClip;
     }
 
 

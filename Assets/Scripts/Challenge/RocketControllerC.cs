@@ -12,6 +12,7 @@ public class RocketControllerC : MonoBehaviour
     private readonly float ENERGY_TURN = 0.5f;
     private readonly float ENERGY_BURST = 2f;
 
+    [SerializeField] private ObjectPool objpool;
     private void Awake()
     {
         _energySystem = GetComponent<EnergySystemC>();
@@ -47,6 +48,8 @@ public class RocketControllerC : MonoBehaviour
 
     private void OnSpace(InputValue value)
     {
+        GameObject obj = objpool.GetObject();
         Debug.Log("Space!");
+        
     }
 }
