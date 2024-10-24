@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -13,10 +14,12 @@ public class RocketControllerC : MonoBehaviour
     private readonly float ENERGY_BURST = 2f;
 
     [SerializeField] private ObjectPool objpool;
+    private Queue<GameObject> tempQueue;
     private void Awake()
     {
         _energySystem = GetComponent<EnergySystemC>();
         _rocketMovement = GetComponent<RocketMovementC>();
+        tempQueue = new Queue<GameObject>();
     }
     
     private void FixedUpdate()
@@ -49,7 +52,14 @@ public class RocketControllerC : MonoBehaviour
     private void OnSpace(InputValue value)
     {
         GameObject obj = objpool.GetObject();
+        tempQueue.Enqueue(obj);
         Debug.Log("Space!");
         
+    }
+
+    private void OnRelease(InputValue value)
+    {
+        if (tempQueue.Count == 0) return;
+        objpool.ReleaseObject(tempQueue.Dequeue());
     }
 }
