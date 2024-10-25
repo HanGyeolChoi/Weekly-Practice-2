@@ -13,13 +13,18 @@ public class RocketControllerC : MonoBehaviour
     private readonly float ENERGY_TURN = 0.5f;
     private readonly float ENERGY_BURST = 2f;
 
-    [SerializeField] private ObjectPool objpool;
-    private Queue<GameObject> tempQueue;
+    [SerializeField] private ObjectPool objPool;
+    [SerializeField] private SecondObjectPool objPool2;
+    [SerializeField] private ThirdObjectPool objPool3;
+    private Queue<GameObject> objQueue;
+
+    private Queue<GameObject> objQueue3;
     private void Awake()
     {
         _energySystem = GetComponent<EnergySystemC>();
         _rocketMovement = GetComponent<RocketMovementC>();
-        tempQueue = new Queue<GameObject>();
+        objQueue = new Queue<GameObject>();
+        objQueue3 = new Queue<GameObject>();
     }
     
     private void FixedUpdate()
@@ -51,15 +56,24 @@ public class RocketControllerC : MonoBehaviour
 
     private void OnSpace(InputValue value)
     {
-        GameObject obj = objpool.GetObject();
-        tempQueue.Enqueue(obj);
+        GameObject obj = objPool.GetObject();
+        GameObject obj2 = objPool2.GetObject();
+        GameObject obj3 = objPool3.GetObject();
         Debug.Log("Space!");
-        
+        objQueue.Enqueue(obj);
+        objQueue3.Enqueue(obj3);
     }
 
     private void OnRelease(InputValue value)
     {
-        if (tempQueue.Count == 0) return;
-        objpool.ReleaseObject(tempQueue.Dequeue());
+        if (objQueue.TryDequeue(out GameObject obj))
+        {
+            objPool.ReleaseObject(obj);
+        }
+        objPool2.ReleaseObject();
+        if (objQueue3.TryDequeue(out GameObject obj3))
+        {
+            objPool3.ReleaseObject(obj3);
+        }
     }
 }

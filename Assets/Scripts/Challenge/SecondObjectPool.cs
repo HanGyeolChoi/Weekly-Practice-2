@@ -2,13 +2,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class ObjectPool : MonoBehaviour
+public class SecondObjectPool : MonoBehaviour
 {
-    private List<GameObject> pool;
-    private const int minSize = 50;                 // 구현사항 1,2 -> 50,  구현사항 3 -> 0
-    private const int maxSize = 300;                // 구현사항 1,2 -> 300, 구현사항 3 -> 100
-    private Queue<GameObject> objectPool;
 
+    private List<GameObject> pool;
+    private const int minSize = 50;
+    private const int maxSize = 300;
+    private Queue<GameObject> objectPool;
+    private Queue<GameObject> releasedObject;
+    private Queue<GameObject> activeObject;
     private int i = 0;
     [SerializeField] private GameObject objectPrefab;
     void Awake()
@@ -16,7 +18,8 @@ public class ObjectPool : MonoBehaviour
         pool = new List<GameObject>();
         objectPool = new Queue<GameObject>();
 
-
+        releasedObject = new Queue<GameObject>();
+        activeObject = new Queue<GameObject>();
 
         for (int i = 0; i < minSize; i++)
         {
@@ -40,6 +43,7 @@ public class ObjectPool : MonoBehaviour
         if (objectPool.TryDequeue(out GameObject obj))      // 오브젝트 풀에서 오브젝트 불러옴
         {
             obj.SetActive(true);
+            activeObject.Enqueue(obj);
         }
 
         else    // 오브젝트 풀이 비어있을 때
@@ -50,12 +54,21 @@ public class ObjectPool : MonoBehaviour
                 pool.Add(obj);
                 obj = GetObject();
             }
-            else
+
+            else // if (pool.Count >= maxSize) // 생성된 오브젝트의 수가 maxSize를 넘었을 때
             {
-                obj = new GameObject("Object");
+                while (true)
+                {
+                    obj = activeObject.Dequeue();
+                    if (!releasedObject.TryPeek(out GameObject result)) break;
+                    if (result == obj)
+                    {
+                        releasedObject.Dequeue();
+                    }
+                    else break;
+                }
+                activeObject.Enqueue(obj);
             }
-
-
         }
 
         return obj;
@@ -68,6 +81,7 @@ public class ObjectPool : MonoBehaviour
         if (pool.Contains(obj))
         {
             objectPool.Enqueue(obj);
+            releasedObject.Enqueue(obj);
             obj.SetActive(false);
         }
 
@@ -77,5 +91,24 @@ public class ObjectPool : MonoBehaviour
         }
     }
 
+    public void ReleaseObject()
+    {
 
+        if (!activeObject.TryPeek(out GameObject obj)) return;
+        
+        if (releasedObject.TryPeek(out GameObject rel))
+        {
+            if (obj == rel)
+            {
+                activeObject.Dequeue();
+                releasedObject.Dequeue();
+                ReleaseObject();
+                return;
+            }
+        }
+        objectPool.Enqueue(obj);
+        releasedObject.Enqueue(obj);
+        obj.SetActive(false);
+
+    }
 }

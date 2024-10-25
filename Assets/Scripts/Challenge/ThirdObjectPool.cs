@@ -2,11 +2,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class ObjectPool : MonoBehaviour
+public class ThirdObjectPool : MonoBehaviour
 {
     private List<GameObject> pool;
-    private const int minSize = 50;                 // 구현사항 1,2 -> 50,  구현사항 3 -> 0
-    private const int maxSize = 300;                // 구현사항 1,2 -> 300, 구현사항 3 -> 100
+    private const int minSize = 0;                 // 구현사항 1,2 -> 50,  구현사항 3 -> 0
+    private const int maxSize = 100;                // 구현사항 1,2 -> 300, 구현사항 3 -> 100
     private Queue<GameObject> objectPool;
 
     private int i = 0;
